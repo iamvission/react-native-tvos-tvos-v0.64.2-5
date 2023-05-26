@@ -16,8 +16,8 @@ import Pressability, {
 import {PressabilityDebugView} from '../../Pressability/PressabilityDebug';
 import TVTouchable from './TVTouchable';
 import typeof TouchableWithoutFeedback from './TouchableWithoutFeedback';
-import Animated from '../../Animated/Animated';
-import Easing from '../../Animated/Easing';
+import Animated from '../../Animated/src/Animated';
+import Easing from '../../Animated/src/Easing';
 import type {ViewStyleProp} from '../../StyleSheet/StyleSheet';
 import flattenStyle from '../../StyleSheet/flattenStyle';
 import Platform from '../../Utilities/Platform';
@@ -154,17 +154,17 @@ class TouchableOpacity extends React.Component<Props, State> {
       minPressDuration: 0,
       pressRectOffset: this.props.pressRetentionOffset,
       onBlur: event => {
-        if (Platform.isTV) {
+        //if (Platform.isTV) {
           this._opacityInactive(250);
-        }
+        //}
         if (this.props.onBlur != null) {
           this.props.onBlur(event);
         }
       },
       onFocus: event => {
-        if (Platform.isTV) {
+        //if (Platform.isTV) {
           this._opacityActive(150);
-        }
+       // }
         if (this.props.onFocus != null) {
           this.props.onFocus(event);
         }
@@ -265,7 +265,7 @@ class TouchableOpacity extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    if (Platform.isTV) {
+    //if (Platform.isTV) {
       this._tvTouchable = new TVTouchable(this, {
         getDisabled: () => this.props.disabled === true,
         onBlur: event => {
@@ -286,7 +286,7 @@ class TouchableOpacity extends React.Component<Props, State> {
           }
         },
       });
-    }
+    //}
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -297,15 +297,15 @@ class TouchableOpacity extends React.Component<Props, State> {
   }
 
   componentWillUnmount(): void {
-    if (Platform.isTV) {
+    //if (Platform.isTV) {
       if (this._tvTouchable != null) {
         this._tvTouchable.destroy();
       }
-    }
+    //}
     this.state.pressability.reset();
   }
 }
 
 module.exports = (React.forwardRef((props, hostRef) => (
   <TouchableOpacity {...props} hostRef={hostRef} />
-)): React.AbstractComponent<$ReadOnly<$Diff<Props, {|hostRef: mixed|}>>>);
+)): React.ComponentType<$ReadOnly<$Diff<Props, {|hostRef: mixed|}>>>);
