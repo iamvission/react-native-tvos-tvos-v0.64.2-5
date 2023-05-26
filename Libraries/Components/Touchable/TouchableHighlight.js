@@ -15,7 +15,7 @@ import Pressability, {
 } from '../../Pressability/Pressability';
 import {PressabilityDebugView} from '../../Pressability/PressabilityDebug';
 import StyleSheet, {type ViewStyleProp} from '../../StyleSheet/StyleSheet';
-import type {ColorValue} from '../../StyleSheet/StyleSheet';
+import type {ColorValue} from '../../StyleSheet/StyleSheetTypes';
 import TVTouchable from './TVTouchable';
 import typeof TouchableWithoutFeedback from './TouchableWithoutFeedback';
 import Platform from '../../Utilities/Platform';
@@ -175,22 +175,26 @@ class TouchableHighlight extends React.Component<Props, State> {
       pressRectOffset: this.props.pressRetentionOffset,
       android_disableSound: this.props.touchSoundDisabled,
       onBlur: event => {
-        if (Platform.isTV) {
+        //if (Platform.isTV) {
           this._hideUnderlay();
-        }
+        //}
         if (this.props.onBlur != null) {
           this.props.onBlur(event);
         }
       },
       onFocus: event => {
-        if (Platform.isTV) {
+        //if (Platform.isTV) {
           this._showUnderlay();
-        }
+       // }
         if (this.props.onFocus != null) {
           this.props.onFocus(event);
         }
       },
-      onLongPress: this.props.onLongPress,
+      onLongPress: event => {
+        if (this.props.onLongPress != null) {
+          this.props.onLongPress(event);
+        }
+      },
       onPress: event => {
         if (this._hideTimeout != null) {
           clearTimeout(this._hideTimeout);
@@ -334,21 +338,21 @@ class TouchableHighlight extends React.Component<Props, State> {
 
   componentDidMount(): void {
     this._isMounted = true;
-    if (Platform.isTV) {
+    //if (Platform.isTV) {
       this._tvTouchable = new TVTouchable(this, {
         getDisabled: () => this.props.disabled === true,
         onBlur: event => {
-          if (Platform.isTV) {
+          //if (Platform.isTV) {
             this._hideUnderlay();
-          }
+         // }
           if (this.props.onBlur != null) {
             this.props.onBlur(event);
           }
         },
         onFocus: event => {
-          if (Platform.isTV) {
+         // if (Platform.isTV) {
             this._showUnderlay();
-          }
+         // }
           if (this.props.onFocus != null) {
             this.props.onFocus(event);
           }
@@ -359,7 +363,7 @@ class TouchableHighlight extends React.Component<Props, State> {
           }
         },
       });
-    }
+    //}
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -371,15 +375,15 @@ class TouchableHighlight extends React.Component<Props, State> {
     if (this._hideTimeout != null) {
       clearTimeout(this._hideTimeout);
     }
-    if (Platform.isTV) {
+    //if (Platform.isTV) {
       if (this._tvTouchable != null) {
         this._tvTouchable.destroy();
       }
-    }
+   // }
     this.state.pressability.reset();
   }
 }
 
 module.exports = (React.forwardRef((props, hostRef) => (
   <TouchableHighlight {...props} hostRef={hostRef} />
-)): React.AbstractComponent<$ReadOnly<$Diff<Props, {|hostRef: mixed|}>>>);
+)): React.ComponentType<$ReadOnly<$Diff<Props, {|hostRef: mixed|}>>>);
