@@ -31,7 +31,7 @@ export default class TVTouchable {
   _tvEventHandler: TVEventHandler;
 
   constructor(component: any, config: TVTouchableConfig) {
-    invariant(Platform.isTV, 'TVTouchable: Requires `Platform.isTV`.');
+ //   invariant(Platform.isTV, 'TVTouchable: Requires `Platform.isTV`.');
     this._tvEventHandler = new TVEventHandler();
     this._tvEventHandler.enable(component, (_, tvData) => {
       tvData.dispatchConfig = {};
