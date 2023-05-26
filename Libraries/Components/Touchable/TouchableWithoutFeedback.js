@@ -135,7 +135,7 @@ class TouchableWithoutFeedback extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    if (Platform.isTV) {
+    //if (Platform.isTV) {
       this._tvTouchable = new TVTouchable(this, {
         getDisabled: () => this.props.disabled === true,
         onBlur: event => {
@@ -149,12 +149,12 @@ class TouchableWithoutFeedback extends React.Component<Props, State> {
           }
         },
         onPress: event => {
-          if (this.props.onPress != null) {
+          if (this.props.onPress != null && Platform.OS !== 'android') {
             this.props.onPress(event);
           }
         },
       });
-    }
+    //}
   }
 
   componentDidUpdate(): void {
@@ -162,11 +162,11 @@ class TouchableWithoutFeedback extends React.Component<Props, State> {
   }
 
   componentWillUnmount(): void {
-    if (Platform.isTV) {
+    //if (Platform.isTV) {
       if (this._tvTouchable != null) {
         this._tvTouchable.destroy();
       }
-    }
+   // }
     this.state.pressability.reset();
   }
 }
