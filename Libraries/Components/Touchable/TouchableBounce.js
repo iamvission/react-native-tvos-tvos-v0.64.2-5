@@ -57,22 +57,26 @@ class TouchableBounce extends React.Component<Props, State> {
       pressRectOffset: this.props.pressRetentionOffset,
       android_disableSound: this.props.touchSoundDisabled,
       onBlur: event => {
-        if (Platform.isTV) {
+        //if (Platform.isTV) {
           this._bounceTo(1, 0.4, 0);
-        }
+       // }
         if (this.props.onBlur != null) {
           this.props.onBlur(event);
         }
       },
       onFocus: event => {
-        if (Platform.isTV) {
+       // if (Platform.isTV) {
           this._bounceTo(0.93, 0.1, 0);
-        }
+        //}
         if (this.props.onFocus != null) {
           this.props.onFocus(event);
         }
       },
-      onLongPress: this.props.onLongPress,
+      onLongPress: event => {
+        if (this.props.onLongPress != null) {
+          this.props.onLongPress(event);
+        }
+      },
       onPress: event => {
         const {onPressAnimationComplete, onPressWithCompletion} = this.props;
         const releaseBounciness = this.props.releaseBounciness ?? 10;
@@ -211,4 +215,4 @@ class TouchableBounce extends React.Component<Props, State> {
 
 module.exports = (React.forwardRef((props, hostRef) => (
   <TouchableBounce {...props} hostRef={hostRef} />
-)): React.AbstractComponent<$ReadOnly<$Diff<Props, {|hostRef: mixed|}>>>);
+)): React.ComponentType<$ReadOnly<$Diff<Props, {|hostRef: mixed|}>>>);
